@@ -1,0 +1,211 @@
+﻿@model SurveyMVC.Models.SurveyModel
+
+@{
+    ViewBag.Title = "new survey";
+}
+<p></p>
+@using (Html.BeginForm("Create", "Survey", FormMethod.Post))
+{
+    //  @Html.AntiForgeryToken()
+    <div class="ss-form-editor" id="form-content-editor">
+        <div class="ss-page-tab-container">
+            <div class="ss-page-tab"><span class="ss-page-tab-text" role="heading" id="ss-form-editor-first-page-tab-text">New survey</span></div>
+            <div class="ss-page-tab-triangle"></div>
+        </div>
+        <div id="ss-form-title">
+            <div class="ss-title-container hovering-textarea-container">
+                <input style="font-size: 12px; margin-top: 50px;" class="jfk-textinput ss-title" name="title" type="text" value="Untitled form" placeholder="" dir="ltr"><label for="form-title" class="aria-only-help">Form Title</label>
+            </div>
+            <div class="ss-desc hovering-textarea-container">
+                <textarea name="subTitle" id="form-description" class="jfk-textinput form-textarea goog-textarea" aria-label="Form Description" placeholder="Form Description" style="overflow-y: hidden; overflow-x: auto; box-sizing: border-box; padding-bottom: 4px;"></textarea>
+            </div>
+        </div>
+        <div id="widget-container">
+            <div>
+                <div class="ss-form-page">
+                    <div id="surveyQuestions">
+                        <!--HERE GOES THE ACTUAL GENERATED QUESTIONS-->
+                        <!--TEXT EXAMPLE-->
+                        <div style="display: none;" class="ss-formwidget-container" tabindex="0" role="group" id="answerType1" aria-label="Which city were you born?">
+                            <div id=":he.fw_tra" class="ss-formwidget-topright-actions ss-widget-nodrag">
+                                <div onclick="removeItem(this)" role="button" id=":he.fw_rmb" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" style="-webkit-user-select: none;" data-tooltip="Delete" aria-label="Delete">
+                                    <div class="docs-icon goog-inline-block ">
+                                        <div class="docs-icon-img-container docs-icon-img docs-icon-trash" aria-hidden="true">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ss-form-entry">
+                                @Html.Hidden("textQuestionTitle", "", new { @class = "ss-q-title" })
+                                <div class="ss-q-title" name="textQuestionTitle">En que ciudad de Venezuela naciste?</div><span class="ss-q-help"></span><div class="fx-click-propagation-outer">
+                                    <input type="text" class="ss-q-short jfk-textinput" disabled="true" tabindex="-1">
+                                    <div class="fx-click-propagation-inner">&nbsp;</div>
+                                </div>
+                            </div>
+                            <div class="ss-formwidget-selection" style="width: 3px; left: 0px; top: 0.05682373046875px; height: 85px; background-color: rgb(77, 144, 254);"></div>
+                        </div>
+                        <!--PARAGRAPH EXAMPLE-->
+                        <div id="answerType2" style="display: none;" class="ss-formwidget-container" tabindex="0" role="group" aria-label="Can you summarize &quot;War and Peace&quot; in a few lines?">
+                            <div id=":ip.fw_tra" class="ss-formwidget-topright-actions ss-widget-nodrag">
+                                <div onclick="removeItem(this)" role="button" id=":ip.fw_rmb" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" style="-webkit-user-select: none;" data-tooltip="Delete" aria-label="Delete">
+                                    <div class="docs-icon goog-inline-block ">
+                                        <div class="docs-icon-img-container docs-icon-img docs-icon-trash" aria-hidden="true">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ss-form-entry">
+                                @Html.Hidden("paragraphQuestionTitle", "", new { @class = "ss-q-title" })
+                                <span class="ss-q-title">Can you summarize "War and Peace" in a few lines?</span><span class="ss-q-help"></span><div class="fx-click-propagation-outer">
+                                    <textarea rows="5" cols="75" class="ss-q-long jfk-textinput form-textarea" disabled="true" tabindex="-1"></textarea>
+                                    <div class="fx-click-propagation-inner">&nbsp;</div>
+                                </div>
+                            </div>
+                            <div class="ss-formwidget-selection" style="width: 3px; left: 0px; top: -0.0340728759765625px; height: 345px; background-color: rgb(77, 144, 254);"></div>
+                        </div>
+                        <!--MULTIPLE CHOICE EXAMPLE -->
+                        <div id="answerType3" style="display: none;" class="ss-formwidget-container" tabindex="0" role="group" aria-label="Does happiness come from money?">
+                            <div id=":jw.fw_tra" class="ss-formwidget-topright-actions ss-widget-nodrag">
+                                <div onclick="removeItem(this)" role="button" id=":jw.fw_rmb" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" style="-webkit-user-select: none;" data-tooltip="Delete" aria-label="Delete">
+                                    <div class="docs-icon goog-inline-block ">
+                                        <div class="docs-icon-img-container docs-icon-img docs-icon-trash" aria-hidden="true">&nbsp;</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ss-form-entry">
+                                @Html.Hidden("multipleChoiceQuestionTitle", "", new { @class = "ss-q-title" })
+                                <span class="ss-q-title">Does happiness come from money?</span>
+                                <span class="ss-q-help"></span>
+                                <ul class="ss-choices">
+                                    <li class="ss-choice-item">
+                                        <!--This is what will be cloned-->
+                                        <label>
+                                            <input type="radio" tabindex="-1" id="group_2045976047_0">
+                                            <span class="ss-choice-label">True</span>
+                                            @Html.Hidden("multipleChoiceOptions", "", new { @class = "ss-choice-label" })
+                                        </label>
+                                    </li>
+                                </ul>
+                                @Html.Hidden("numberOfOptions", "", new { @class = "option-num" })
+                            </div>
+                            <div class="ss-formwidget-selection" style="width: 3px; left: 0px; top: -0.72442626953125px; height: 353px; background-color: rgb(77, 144, 254);"></div>
+                        </div>
+                        <!--END OF QUESTIONS-->
+                    </div>
+                    <!--END OF ANSWERS-->
+                    <div class="ss-formwidget-container ss-formwidget-container-editor">
+                        <div class="ss-formwidget-div">
+                            <div class="ss-formwidget-draghandle"></div>
+                            <div>
+                                <table class="ss-widget-nodrag goog-inline-block" role="presentation">
+                                    <tbody>
+                                        <tr>
+                                            <th class="ss-header"><label class="ss-formwidget-fieldlabel" for="questionText">Question</label></th>
+                                            <td>
+                                                <input class="jfk-textinput ss-formwidget-inputfield" id="questionText" label="Untitled Question" placeholder="Untitled Question" type="text" dir="ltr">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ss-header"><span class="ss-formwidget-fieldlabel"><label for=":5l.fw_tdd">Question Type</label></span></th>
+                                            <td>
+                                                <div id=":5l.fw_tdd" class="goog-inline-block goog-flat-menu-button">
+                                                    <select id="dropDown">
+                                                        <option value="oText">Text</option>
+                                                        <option value="olText">Paragraph Text</option>
+                                                        <option value="oChoice" selected="selected">Multiple Choice</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table><br>
+                                <div id=":5l.fw_fp" class="ss-formwidget-fieldpreview ss-widget-nodrag goog-inline-block">
+                                    <div>
+                                        <!--HERE COMES TEXT OPTION (HIDDEN DEFAULT)-->
+                                        <div class="fx-click-propagation-outer" style="display: none;" id="text1">
+                                            <input type="text" class="ss-formwidget-disabledpreview jfk-textinput" disabled="true" tabindex="-1" value="Their answer">
+                                            <div class="fx-click-propagation-inner">&nbsp;</div>
+                                        </div>
+                                        <!--HERE COMES PARAGRAPH TEXT OPTION (HIDDEN DEFAULT)-->
+                                        <div class="fx-click-propagation-outer" style="display: none;" id="text2">
+                                            <input type="text" class="ss-formwidget-disabledpreview jfk-textinput" disabled="true" tabindex="-1" value="Their longer answer" style="height: 7em; width: 35em;">
+                                            <div class="fx-click-propagation-inner">&nbsp;</div>
+                                        </div>
+                                        <!--HERE COMES MULTIPLE CHOICE (SHOW DEFAULT)-->
+                                        <div class="magic-list" role="list" aria-label="Multiple choice choices" id="choice1">
+                                            <div id=":5u.cis" class="parentOfItems">
+                                                <div class="magic-list-item" role="listitem" id="multipleChoiceItem" name="multiple1">
+                                                    <div class="magic-list-content-el">
+                                                        <div class="ss-header goog-inline-block" id=":63.mli-label"></div>
+                                                        <div class="magic-list-dragger goog-inline-block" style="visibility: hidden;">
+                                                            <div class="magic-list-drag-handle"></div>
+                                                        </div>
+                                                        <div class="jfk-radiobutton" role="radio">
+                                                            <input type="radio" class="jfk-radiobutton-radio" disabled="disabled">
+                                                            <div class="jfk-radiobutton-label"></div>
+                                                        </div>
+                                                        <textarea id=":63.mli-input" class="jfk-textinput magic-list-item-input" dir="ltr" placeholder="">Option</textarea>
+                                                        <span class="ss-x-box goog-inline-block" role="button" onclick="removeItem(this)" aria-label="Remove option" id="removeButton" tabindex="0" style="display: none;"></span>
+                                                        <div class="ss-go-to-dd" style="display: none;">
+                                                            <div class="goog-inline-block goog-flat-menu-button jfk-select" role="listbox" aria-expanded="false" tabindex="0" aria-haspopup="false" aria-activedescendant=":65" style="-webkit-user-select: none;">
+                                                                <div class="goog-inline-block goog-flat-menu-button-caption" id=":65" role="option"></div>
+                                                                <div class="goog-inline-block goog-flat-menu-button-dropdown" aria-hidden="true">&nbsp;</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div id=":5u.gi" class="ss-ghost">
+                                                <div class="magic-list-item" role="listitem">
+                                                    <div class="magic-list-content-el">
+                                                        <div class="ss-header goog-inline-block" id=":5w.mli-label"></div>
+                                                        <div class="magic-list-dragger goog-inline-block" style="visibility: hidden;">
+                                                            <div class="magic-list-drag-handle"></div>
+                                                        </div>
+                                                        <div class="jfk-radiobutton" role="radio">
+                                                            <input type="radio" class="jfk-radiobutton-radio" disabled="disabled">
+                                                            <div class="jfk-radiobutton-label"></div>
+                                                        </div>
+                                                        <textarea id=":5w.mli-input" class="jfk-textinput magic-list-item-input label-input-label ss-ghost-input ss-formwidget-inputfield" placeholder="Click to add option" aria-label="Begin typing to add an option">Click to add option</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="magic-list-item" role="listitem" style="display: none;">
+                                                <div class="magic-list-content-el">
+                                                    <div class="ss-header goog-inline-block" id=":5x.mli-label"></div>
+                                                    <div class="magic-list-drag-placeholder"></div>
+                                                    <div class="jfk-radiobutton" role="radio">
+                                                        <span class="jfk-radiobutton-radio"></span><div class="jfk-radiobutton-label"></div>
+                                                    </div><table class="goog-inline-block ss-magic-list-other-item" role="presentation"><tbody><tr><td class="ss-magic-list-other-msg">Other:</td><td class="ss-other-input-container"><input class="jfk-textinput ss-magic-list-other-input label-input-label label-input-label-disabled" id=":5x.mli-input" label="Their answer" placeholder="Their answer" type="text" aria-label="Their answer" disabled=""></td></tr></tbody></table><span class="ss-x-box goog-inline-block" role="button" aria-label="Remove other option" id=":5x.mli-x-out" tabindex="0"></span><div class="ss-go-to-dd">
+                                                        <div class="goog-inline-block goog-flat-menu-button jfk-select" role="listbox" aria-expanded="false" tabindex="0" aria-haspopup="false" aria-activedescendant=":5z" style="-webkit-user-select: none;">
+                                                            <div class="goog-inline-block goog-flat-menu-button-caption" id=":5z" role="option"></div>
+                                                            <div class="goog-inline-block goog-flat-menu-button-dropdown" aria-hidden="true">&nbsp;</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id=":5u.oi"></div>
+                                        </div>
+                                        <!--END OF SECTION-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ss-widget-nodrag goog-inline-block">
+                                <div class="goog-inline-block ss-header">
+                                    <button id="submit" role="button" value="Search" type="submit" class="goog-inline-block jfk-button jfk-button-action" tabindex="0" style="-webkit-user-select: none;">Done</button>
+                                </div><span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ss-formwidget-selection" style="width: 3px; left: 0px; top: 0px; height: 316px; background-color: rgb(77, 144, 254);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ss-bottom-buttons-container">
+            <div id="ss-add-item-button" class="ss-add-item">
+                <div role="button" onclick="addItem()" class="goog-inline-block jfk-button jfk-button-standard jfk-button-collapse-right add-item-primary" tabindex="0" aria-label="Add last chosen item " value="undefined" style="-webkit-user-select: none;">Add item</div>
+            </div>
+        </div>
+    </div>
+
+}
