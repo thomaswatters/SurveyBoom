@@ -1,0 +1,97 @@
+﻿@model SurveyMVC.Models.SurveyModel
+
+@{
+    ViewBag.Title = @Model.Title;
+}
+<p></p>
+@using (Html.BeginForm("Display", "Survey", FormMethod.Post))
+{
+    <div class="ss-form-editor" id="form-content-editor">
+        <div class="ss-form-container">
+            <div class="ss-header-image-container">
+                <div class="ss-header-image-image">
+                    <div class="ss-header-image-sizer"></div>
+                </div>
+            </div>
+            <div class="ss-top-of-page">
+                <div class="ss-form-heading">
+                    <h1 style="margin-left: 20px;" class="ss-form-title" dir="ltr">@Model.Title</h1>
+                    <div style="margin-left: 20px;" class="ss-form-desc ss-no-ignore-whitespace" dir="ltr">@Model.Description</div>
+                </div>
+            </div>
+            <div class="ss-form">
+                <ol role="list" class="ss-question-list" style="padding-left: 0">
+                    <div class="ss-form-question errorbox-good" role="listitem">
+                        @foreach (var question in Model.TextQuestions)
+                        {
+                            <div dir="ltr" class="ss-item  ss-text">
+                                <div class="ss-form-entry">
+                                    <label class="ss-q-item-label" for="entry_414161519">
+                                        <div style="margin-left: 20px;" class="ss-q-title">@question</div></label>
+                                    <input style="margin-left: 5px;" type="text" name="textAnswer" value="" class="ss-q-short" id="entry_414161519" aria-label="@question" title="">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="ss-form-question errorbox-good" role="listitem">
+                        @foreach (var longQuestion in Model.ParagraphQuestions)
+                        {
+                            <div dir="ltr" class="ss-item  ss-paragraph-text">
+                                <div class="ss-form-entry">
+                                    <label class="ss-q-item-label" for="entry_602965072">
+                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion</div></label>
+                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion"></textarea>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="ss-form-question errorbox-good" role="listitem">
+                        @{
+                            var counter = 0;
+                        }
+                        @foreach (var multipleChoice in Model.MultipleChoiceQuestions)
+                        {
+                            <div dir="ltr" class="ss-item  ss-radio">
+                                <div class="ss-form-entry">
+                                    <label class="ss-q-item-label">
+                                        <div style="margin-left: 20px;" class="ss-q-title">@multipleChoice.Key</div>
+                                        @Html.Hidden("multipleChoiceQuestion", @multipleChoice.Key)
+                                    </label>
+                                    <ul class="ss-choices" role="radiogroup" aria-label="Multiple Choice">
+                                        @Html.Hidden("multipleChoiceAnswer", "")
+                                        @foreach (var option in @multipleChoice.Value)
+                                        {
+                                            <li class="ss-choice-item">
+                                                <label>
+                                                    <span class="ss-choice-item-control goog-inline-block">
+                                                        <input style="margin-left: 30px;" type="radio" name="@multipleChoice" value="@option" role="radio" class="ss-q-radio" aria-label="@option">
+                                                    </span>
+                                                    <span class="ss-choice-label">@option</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="ss-item ss-navigate">
+                        <table id="navigation-table">
+                            <tbody>
+                            <tr>
+                                <td class="ss-form-entry goog-inline-block" id="navigation-buttons" dir="ltr">
+                                    <input style="margin-left: 20px;" type="submit" name="submit" value="Submit" id="ss-submit" class="jfk-button jfk-button-action ">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ol>
+
+            </div>
+            <div class="ss-footer">
+                <div class="ss-attribution"></div>
+            </div>
+        </div>
+    </div>
+}

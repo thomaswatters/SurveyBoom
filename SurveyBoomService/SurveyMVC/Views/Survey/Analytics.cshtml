@@ -1,0 +1,50 @@
+﻿@model SurveyMVC.Models.TakenSurveyModel
+
+@{
+    ViewBag.Title = "Analytics";
+}
+
+<h2>Analytics</h2>
+
+<div id="analytics-container">   
+    <div class="ss-all-analytics" dir="auto">
+        <div class="ss-response-count-container">
+            <br/>
+            <span class="ss-total-num-responses" id=":0.rc">4 responses</span>
+        </div>
+        <div class="ss-summary">
+            <br/>
+            <h1>Summary</h1>
+            <br/>
+            <div class="ss-charts-container" id=":0.cc">
+                <h3 class="ss-indiv-chart-title">Whats your age?</h3>
+                <br/>
+                <div class="ss-summary-container" id=":1.sc">
+                    <div class="ss-text-answer-group">
+                        <div class="ss-text-answer-container">aaa</div>
+                        <div class="ss-text-answer-container">21</div>
+                        <div class="ss-text-answer-container">aaaaa</div>
+                        <div class="ss-text-answer-container">fhfhfg</div>
+                    </div>
+                </div>
+                <br/>
+                <h3 class="ss-indiv-chart-title">Tell me a little bit about yourself</h3>
+                <br/>
+                <div class="ss-summary-container" id=":2.sc">
+                    <div class="ss-text-answer-group">
+                        <div class="ss-text-answer-container">aaaaaaa</div>
+                        <div class="ss-text-answer-container">21</div>
+                        <div class="ss-text-answer-container">aaaaa</div>
+                        <div class="ss-text-answer-container">hgjhgjghj</div>
+                    </div>
+                </div>
+                <br/>
+                <h3 class="ss-indiv-chart-title">Multiple Option question</h3>
+                <br/>
+                <div class="ss-summary-container" id=":3.sc">
+                    <img alt="alternateText" src="@Url.Action("Chart")" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
