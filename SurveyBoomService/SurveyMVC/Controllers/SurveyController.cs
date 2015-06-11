@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.UI.DataVisualization.Charting;
 using System.Web.Mvc;
+using System.Web.UI.DataVisualization.Charting;
 using Microsoft.AspNet.Identity;
 using SurveyMVC.Models;
 using SurveyMVC.net.azurewebsites.surveyboomservice;
-
 namespace SurveyMVC.Controllers
 {
     public class SurveyController : Controller
     {
+        readonly SurveyBoomService _service = new SurveyBoomService();
         // GET: Survey
 //        public ActionResult Index()
 //        {
@@ -59,12 +59,11 @@ namespace SurveyMVC.Controllers
             if(id == -1 || key == null)//Check key with the service
                 return RedirectToAction("Login", "Account");
 
-            SurveyModel model = null;//this is test only
+            SurveyTransport model = _service.GetSurvey(key.Value);
 
-            if (Session["CreatedSurvey"] != null)
-                model = (SurveyModel) Session["CreatedSurvey"];
+            if(model == null) throw new Exception();
 
-            Session["CurrentDisplayedSurvey"] = key;
+            Session["CurrentDisplayedSurvey"] = key.Value;
 
             return View(model);
         }
@@ -72,17 +71,17 @@ namespace SurveyMVC.Controllers
         // POST: Survey/Display
         public ActionResult Display(string[] textAnswer, string[] longTextAnswer, string[] multipleChoiceQuestion, string[] multipleChoiceAnswer)
         {
-            var surveyId = -1;
+            int surveyId;
+            if (Session["CurrentDisplayedSurvey"] != null)
+                surveyId = (int)Session["CurrentDisplayedSurvey"];
+            else 
+                throw new Exception();
 
-            /*TODO:Get Survey From Service*/
             var textQuestionsAndAnswer = new List<Tuple<string, string>>();
             var paragraphQuestionAndAnswer = new List<Tuple<string, string>>();
             var multipleChoiceQuestionAndAnswer = new List<Tuple<string, string>>();
 
-            SurveyModel model = null;//this is for test only.
-
-            if (Session["CreatedSurvey"] != null)
-                model = (SurveyModel)Session["CreatedSurvey"];
+            SurveyModel model = null; 
 
             if (model != null)
             {
@@ -174,7 +173,7 @@ namespace SurveyMVC.Controllers
             {
                 QuestionTransport qt = new QuestionTransport
                 {
-                    Type = QuestionType.ShortAnswer,
+                    Type = QuestionType.MultipleChoice,
                     QuestionText = question.Key,
                     Options = question.Value.ToArray()
                 };
@@ -183,19 +182,14 @@ namespace SurveyMVC.Controllers
             }
             SurveyTransport model = new SurveyTransport
             {
-               // Key = -1,            //this is just example
                 Title = title,
                 Description = subTitle,
                 UserID = id,
                 Questions = listOfQuestions.ToArray()
             };
+                       
+            int surveyKey = _service.CreateSurvey(model);
             
-            var service = new SurveyBoomService();
-            int surveyKey = service.CreateSurvey(model);
-
-
-            Session["CreatedSurvey"] = model;
-
             return RedirectToAction("Display", "Survey", new { key = surveyKey });//I should go back to the user page and display all the surveys
         }
 
@@ -211,8 +205,7 @@ namespace SurveyMVC.Controllers
             {
                 try
                 {
-                    SurveyBoomService service = new SurveyBoomService();
-                    id = service.GetUserID(User.Identity.GetUserName());
+                    id = _service.GetUserID(User.Identity.GetUserName());
                 }
                 catch (Exception e)
                 {

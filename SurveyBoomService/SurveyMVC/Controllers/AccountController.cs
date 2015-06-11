@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +7,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SurveyMVC.Models;
 using SurveyMVC.net.azurewebsites.surveyboomservice;
-
 namespace SurveyMVC.Controllers
 {
     [Authorize]
@@ -168,7 +164,7 @@ namespace SurveyMVC.Controllers
             if (ModelState.IsValid)
             {
 
-                var service = new net.azurewebsites.surveyboomservice.SurveyBoomService();
+                var service = new SurveyBoomService();
                 service.CreateUser(model.Email, model.Password);
 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };

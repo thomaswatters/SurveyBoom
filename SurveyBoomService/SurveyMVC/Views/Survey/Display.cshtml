@@ -1,4 +1,5 @@
-﻿@model SurveyMVC.Models.SurveyModel
+﻿@using SurveyMVC.net.azurewebsites.surveyboomservice
+@model SurveyMVC.net.azurewebsites.surveyboomservice.SurveyTransport
 
 @{
     ViewBag.Title = @Model.Title;
@@ -22,25 +23,25 @@
             <div class="ss-form">
                 <ol role="list" class="ss-question-list" style="padding-left: 0">
                     <div class="ss-form-question errorbox-good" role="listitem">
-                        @foreach (var question in Model.TextQuestions)
-                        {
+                        @foreach (var question in Model.Questions.Where(i => i.Type == QuestionType.ShortAnswer))
+                        {                          
                             <div dir="ltr" class="ss-item  ss-text">
                                 <div class="ss-form-entry">
                                     <label class="ss-q-item-label" for="entry_414161519">
-                                        <div style="margin-left: 20px;" class="ss-q-title">@question</div></label>
-                                    <input style="margin-left: 5px;" type="text" name="textAnswer" value="" class="ss-q-short" id="entry_414161519" aria-label="@question" title="">
+                                        <div style="margin-left: 20px;" class="ss-q-title">@question.QuestionText</div></label>
+                                    <input style="margin-left: 5px;" type="text" name="textAnswer" value="" class="ss-q-short" id="entry_414161519" aria-label="@question.QuestionText" title="">
                                 </div>
                             </div>
                         }
                     </div>
                     <div class="ss-form-question errorbox-good" role="listitem">
-                        @foreach (var longQuestion in Model.ParagraphQuestions)
+                        @foreach (var longQuestion in Model.Questions.Where(i => i.Type == QuestionType.ShortAnswer))
                         {
                             <div dir="ltr" class="ss-item  ss-paragraph-text">
                                 <div class="ss-form-entry">
                                     <label class="ss-q-item-label" for="entry_602965072">
-                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion</div></label>
-                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion"></textarea>
+                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion.QuestionText</div></label>
+                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion.QuestionText"></textarea>
                                 </div>
                             </div>
                         }
@@ -49,17 +50,17 @@
                         @{
                             var counter = 0;
                         }
-                        @foreach (var multipleChoice in Model.MultipleChoiceQuestions)
+                        @foreach (var multipleChoice in Model.Questions.Where(i => i.Type == QuestionType.MultipleChoice))
                         {
                             <div dir="ltr" class="ss-item  ss-radio">
                                 <div class="ss-form-entry">
                                     <label class="ss-q-item-label">
-                                        <div style="margin-left: 20px;" class="ss-q-title">@multipleChoice.Key</div>
-                                        @Html.Hidden("multipleChoiceQuestion", @multipleChoice.Key)
+                                        <div style="margin-left: 20px;" class="ss-q-title">@multipleChoice.QuestionText</div>
+                                        @Html.Hidden("multipleChoiceQuestion", @multipleChoice.QuestionText)
                                     </label>
                                     <ul class="ss-choices" role="radiogroup" aria-label="Multiple Choice">
                                         @Html.Hidden("multipleChoiceAnswer", "")
-                                        @foreach (var option in @multipleChoice.Value)
+                                        @foreach (var option in @multipleChoice.Options)
                                         {
                                             <li class="ss-choice-item">
                                                 <label>

@@ -41,6 +41,8 @@ namespace SurveyMVC.net.azurewebsites.surveyboomservice {
         
         private System.Threading.SendOrPostCallback CreateSurveyOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetSurveyOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -96,6 +98,9 @@ namespace SurveyMVC.net.azurewebsites.surveyboomservice {
         
         /// <remarks/>
         public event CreateSurveyCompletedEventHandler CreateSurveyCompleted;
+        
+        /// <remarks/>
+        public event GetSurveyCompletedEventHandler GetSurveyCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://surveyboomservice.azurewebsites.net/GetUserID", RequestNamespace="http://surveyboomservice.azurewebsites.net/", ResponseNamespace="http://surveyboomservice.azurewebsites.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -275,6 +280,35 @@ namespace SurveyMVC.net.azurewebsites.surveyboomservice {
             if ((this.CreateSurveyCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.CreateSurveyCompleted(this, new CreateSurveyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://surveyboomservice.azurewebsites.net/GetSurvey", RequestNamespace="http://surveyboomservice.azurewebsites.net/", ResponseNamespace="http://surveyboomservice.azurewebsites.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public SurveyTransport GetSurvey(int ID) {
+            object[] results = this.Invoke("GetSurvey", new object[] {
+                        ID});
+            return ((SurveyTransport)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetSurveyAsync(int ID) {
+            this.GetSurveyAsync(ID, null);
+        }
+        
+        /// <remarks/>
+        public void GetSurveyAsync(int ID, object userState) {
+            if ((this.GetSurveyOperationCompleted == null)) {
+                this.GetSurveyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetSurveyOperationCompleted);
+            }
+            this.InvokeAsync("GetSurvey", new object[] {
+                        ID}, this.GetSurveyOperationCompleted, userState);
+        }
+        
+        private void OnGetSurveyOperationCompleted(object arg) {
+            if ((this.GetSurveyCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetSurveyCompleted(this, new GetSurveyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -545,6 +579,32 @@ namespace SurveyMVC.net.azurewebsites.surveyboomservice {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void GetSurveyCompletedEventHandler(object sender, GetSurveyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetSurveyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetSurveyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public SurveyTransport Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((SurveyTransport)(this.results[0]));
             }
         }
     }

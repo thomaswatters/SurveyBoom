@@ -118,6 +118,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetSurvey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyResult" type="tns:SurveyTransport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetUserIDSoapIn">
@@ -156,6 +170,12 @@
   <wsdl:message name="CreateSurveySoapOut">
     <wsdl:part name="parameters" element="tns:CreateSurveyResponse" />
   </wsdl:message>
+  <wsdl:message name="GetSurveySoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurvey" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveySoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyResponse" />
+  </wsdl:message>
   <wsdl:portType name="SurveyBoomServiceSoap">
     <wsdl:operation name="GetUserID">
       <wsdl:input message="tns:GetUserIDSoapIn" />
@@ -180,6 +200,10 @@
     <wsdl:operation name="CreateSurvey">
       <wsdl:input message="tns:CreateSurveySoapIn" />
       <wsdl:output message="tns:CreateSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurvey">
+      <wsdl:input message="tns:GetSurveySoapIn" />
+      <wsdl:output message="tns:GetSurveySoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="SurveyBoomServiceSoap" type="tns:SurveyBoomServiceSoap">
@@ -238,6 +262,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetSurvey">
+      <soap:operation soapAction="http://surveyboomservice.azurewebsites.net/GetSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="SurveyBoomServiceSoap12" type="tns:SurveyBoomServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -288,6 +321,15 @@
     </wsdl:operation>
     <wsdl:operation name="CreateSurvey">
       <soap12:operation soapAction="http://surveyboomservice.azurewebsites.net/CreateSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurvey">
+      <soap12:operation soapAction="http://surveyboomservice.azurewebsites.net/GetSurvey" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -268,6 +268,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Web References\net.azurewebsites.surveyboomservice\SurveyBoomService.wsdl" />
+    <Content Include="Web References\net.azurewebsites.surveyboomservice\SurveyTransport.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
