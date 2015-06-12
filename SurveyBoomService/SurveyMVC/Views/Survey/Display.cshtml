@@ -1,5 +1,5 @@
 ﻿@using SurveyMVC.net.azurewebsites.surveyboomservice
-@model SurveyTransport
+@model SurveyMVC.net.azurewebsites.surveyboomservice.SurveyTransport
 
 @{
     ViewBag.Title = @Model.Title;
@@ -34,22 +34,7 @@
                             </div>
                         }
                     </div>
-@*                    <div class="ss-form-question errorbox-good" role="listitem">*@
-@*                        @foreach (var longQuestion in Model.Questions.Where(i => i.Type == QuestionType.ShortAnswer))*@
-@*                        {*@
-@*                            <div dir="ltr" class="ss-item  ss-paragraph-text">*@
-@*                                <div class="ss-form-entry">*@
-@*                                    <label class="ss-q-item-label" for="entry_602965072">*@
-@*                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion.QuestionText</div></label>*@
-@*                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion.QuestionText"></textarea>*@
-@*                                </div>*@
-@*                            </div>*@
-@*                        }*@
-@*                    </div>*@
                     <div class="ss-form-question errorbox-good" role="listitem">
-                        @{
-                            var counter = 0;
-                        }
                         @foreach (var multipleChoice in Model.Questions.Where(i => i.Type == QuestionType.MultipleChoice))
                         {
                             <div dir="ltr" class="ss-item  ss-radio">
@@ -65,7 +50,7 @@
                                             <li class="ss-choice-item">
                                                 <label>
                                                     <span class="ss-choice-item-control goog-inline-block">
-                                                        <input style="margin-left: 30px;" type="radio" name="@multipleChoice" value="@option" role="radio" class="ss-q-radio" aria-label="@option">
+                                                        <input style="margin-left: 30px;" type="radio" name="@multipleChoice.QuestionText" value="@option" role="radio" class="ss-q-radio" aria-label="@option">
                                                     </span>
                                                     <span class="ss-choice-label">@option</span>
                                                 </label>
