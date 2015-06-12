@@ -1,5 +1,5 @@
 ﻿@using SurveyMVC.net.azurewebsites.surveyboomservice
-@model SurveyMVC.net.azurewebsites.surveyboomservice.SurveyTransport
+@model SurveyTransport
 
 @{
     ViewBag.Title = @Model.Title;
@@ -34,18 +34,18 @@
                             </div>
                         }
                     </div>
-                    <div class="ss-form-question errorbox-good" role="listitem">
-                        @foreach (var longQuestion in Model.Questions.Where(i => i.Type == QuestionType.ShortAnswer))
-                        {
-                            <div dir="ltr" class="ss-item  ss-paragraph-text">
-                                <div class="ss-form-entry">
-                                    <label class="ss-q-item-label" for="entry_602965072">
-                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion.QuestionText</div></label>
-                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion.QuestionText"></textarea>
-                                </div>
-                            </div>
-                        }
-                    </div>
+@*                    <div class="ss-form-question errorbox-good" role="listitem">*@
+@*                        @foreach (var longQuestion in Model.Questions.Where(i => i.Type == QuestionType.ShortAnswer))*@
+@*                        {*@
+@*                            <div dir="ltr" class="ss-item  ss-paragraph-text">*@
+@*                                <div class="ss-form-entry">*@
+@*                                    <label class="ss-q-item-label" for="entry_602965072">*@
+@*                                        <div style="margin-left: 20px;" class="ss-q-title">@longQuestion.QuestionText</div></label>*@
+@*                                    <textarea style="margin-left: 5px;" name="longTextAnswer" rows="8" cols="0" class="ss-q-long" id="entry_602965072" dir="auto" aria-label="@longQuestion.QuestionText"></textarea>*@
+@*                                </div>*@
+@*                            </div>*@
+@*                        }*@
+@*                    </div>*@
                     <div class="ss-form-question errorbox-good" role="listitem">
                         @{
                             var counter = 0;

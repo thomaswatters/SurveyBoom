@@ -85,6 +85,7 @@
           <s:element minOccurs="1" maxOccurs="1" name="UserID" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Questions" type="tns:ArrayOfQuestionTransport" />
+          <s:element minOccurs="1" maxOccurs="1" name="SurveyID" type="s:int" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfQuestionTransport">
@@ -97,6 +98,8 @@
           <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:QuestionType" />
           <s:element minOccurs="0" maxOccurs="1" name="QuestionText" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Options" type="tns:ArrayOfString" />
+          <s:element minOccurs="1" maxOccurs="1" name="QuestionID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseString" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:simpleType name="QuestionType">
@@ -129,6 +132,34 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="GetSurveyResult" type="tns:SurveyTransport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="response" type="tns:SurveyTransport" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitSurveyResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SubmitSurveyResponseResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllResponses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="surveyID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllResponsesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllResponsesResult" type="tns:ArrayOfQuestionTransport" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -176,6 +207,18 @@
   <wsdl:message name="GetSurveySoapOut">
     <wsdl:part name="parameters" element="tns:GetSurveyResponse" />
   </wsdl:message>
+  <wsdl:message name="SubmitSurveyResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitSurveyResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitSurveyResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllResponsesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllResponses" />
+  </wsdl:message>
+  <wsdl:message name="GetAllResponsesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllResponsesResponse" />
+  </wsdl:message>
   <wsdl:portType name="SurveyBoomServiceSoap">
     <wsdl:operation name="GetUserID">
       <wsdl:input message="tns:GetUserIDSoapIn" />
@@ -204,6 +247,14 @@
     <wsdl:operation name="GetSurvey">
       <wsdl:input message="tns:GetSurveySoapIn" />
       <wsdl:output message="tns:GetSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitSurveyResponse">
+      <wsdl:input message="tns:SubmitSurveyResponseSoapIn" />
+      <wsdl:output message="tns:SubmitSurveyResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllResponses">
+      <wsdl:input message="tns:GetAllResponsesSoapIn" />
+      <wsdl:output message="tns:GetAllResponsesSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="SurveyBoomServiceSoap" type="tns:SurveyBoomServiceSoap">
@@ -271,6 +322,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SubmitSurveyResponse">
+      <soap:operation soapAction="http://surveyboomservice.azurewebsites.net/SubmitSurveyResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllResponses">
+      <soap:operation soapAction="http://surveyboomservice.azurewebsites.net/GetAllResponses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="SurveyBoomServiceSoap12" type="tns:SurveyBoomServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -330,6 +399,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetSurvey">
       <soap12:operation soapAction="http://surveyboomservice.azurewebsites.net/GetSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitSurveyResponse">
+      <soap12:operation soapAction="http://surveyboomservice.azurewebsites.net/SubmitSurveyResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllResponses">
+      <soap12:operation soapAction="http://surveyboomservice.azurewebsites.net/GetAllResponses" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
