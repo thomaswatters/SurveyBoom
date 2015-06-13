@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.UI.DataVisualization.Charting;
 using System.Web.Mvc;
+using System.Web.UI.DataVisualization.Charting;
 using Microsoft.AspNet.Identity;
 using SurveyMVC.Models;
 using SurveyMVC.net.azurewebsites.surveyboomservice;
-
 namespace SurveyMVC.Controllers
 {
     public class SurveyController : Controller
     {
+        readonly SurveyBoomService _service = new SurveyBoomService();
         // GET: Survey
 //        public ActionResult Index()
 //        {
@@ -19,25 +19,42 @@ namespace SurveyMVC.Controllers
 //        }
 //
         // GET: Survey/Analytics/8
-        public ActionResult Analytics(int? key)
-        {
-            var takenSurvey = new TakenSurveyModel();
+        public ActionResult Analytics(int key)
+        {      
+            var listOfQuestions = _service.GetAllResponses(key).ToArray();
 
-            if (Session["takenSurvey"] != null)
-                takenSurvey = (TakenSurveyModel) Session["takenSurvey"];
+            var shortAnswers = GetAnswers(listOfQuestions, QuestionType.ShortAnswer);
+            var multipleChoiceAnswers = GetAnswers(listOfQuestions, QuestionType.MultipleChoice);
+            var multipleChoiceQuestions = GetMultipleChoiceQuestions(listOfQuestions, QuestionType.MultipleChoice);
+            var options = GetOptions(listOfQuestions);
 
+            var model = new AnalyticsModel
+            {
+                ShortAnswers = shortAnswers,
+                MultipleChoiceQuestions = multipleChoiceQuestions,
+                MultipleChoiceAnswers = multipleChoiceAnswers,
+                MultipleChoiceOptions = options
+            };
 
-            return View(takenSurvey);
+            return View(model);
         }
 
-        public ActionResult Chart()
+        
+
+
+        public ActionResult Chart(string options, string answers)
         {
-            var takenSurvey = new TakenSurveyModel();
+            var optionsArray = options.Split(',');
+            var answersArray = answers.Split(',');
 
-            if (Session["takenSurvey"] != null)
-                takenSurvey = (TakenSurveyModel)Session["takenSurvey"];
+            var dictionary = new Dictionary<string, int>();
 
-
+            foreach (var option in optionsArray)
+            {
+                var option1 = option;
+                var result = answersArray.Count(i => i == option1);
+                dictionary.Add(option1, result);
+            }
 
             var chart = new Chart();
             chart.ChartAreas.Add(new ChartArea());
@@ -46,7 +63,7 @@ namespace SurveyMVC.Controllers
             chart.Series["d"].ChartType = SeriesChartType.Pie;
             chart.Series["d"]["PieLabelStyle"] = "Outside";
             chart.Series["d"]["PieLineColor"] = "Black";
-            chart.Series["d"].Points.DataBindXY(new[] { "a", "b" }, new[] { 8, 7 });
+            chart.Series["d"].Points.DataBindXY(dictionary.Keys, dictionary.Values);
             var ms = new MemoryStream();
             chart.SaveImage(ms, ChartImageFormat.Png);
             return File(ms.ToArray(), "image/png");
@@ -54,80 +71,59 @@ namespace SurveyMVC.Controllers
         // GET: Survey/Display
         public ActionResult Display(int? key)
         {
-            int id = GetCurrentUserId();
+            var id = GetCurrentUserId();
 
-            if(id == -1 || key == null)//Check key with the service
+            if(id == -1 || key == null)
                 return RedirectToAction("Login", "Account");
 
-            SurveyModel model = null;//this is test only
+            var model = _service.GetSurvey(key.Value);
 
-            if (Session["CreatedSurvey"] != null)
-                model = (SurveyModel) Session["CreatedSurvey"];
+            if(model == null) throw new Exception();
 
-            Session["CurrentDisplayedSurvey"] = key;
+            Session["CurrentDisplayedSurvey"] = key.Value;
 
             return View(model);
         }
         [HttpPost]
         // POST: Survey/Display
-        public ActionResult Display(string[] textAnswer, string[] longTextAnswer, string[] multipleChoiceQuestion, string[] multipleChoiceAnswer)
+        public ActionResult Display(string[] textAnswer, string[] multipleChoiceQuestion, string[] multipleChoiceAnswer)
         {
-            var surveyId = -1;
+            if(textAnswer == null) textAnswer = new string[0];
+          
+            int surveyId;
+            if (Session["CurrentDisplayedSurvey"] != null)
+                surveyId = (int) Session["CurrentDisplayedSurvey"];
+            else 
+                throw new Exception("");
 
-            /*TODO:Get Survey From Service*/
-            var textQuestionsAndAnswer = new List<Tuple<string, string>>();
-            var paragraphQuestionAndAnswer = new List<Tuple<string, string>>();
-            var multipleChoiceQuestionAndAnswer = new List<Tuple<string, string>>();
+            int userId = GetCurrentUserId();
 
-            SurveyModel model = null;//this is for test only.
-
-            if (Session["CreatedSurvey"] != null)
-                model = (SurveyModel)Session["CreatedSurvey"];
-
+            SurveyTransport model = _service.GetSurvey(surveyId);
+            
             if (model != null)
             {
-                if(textAnswer != null)
-                    for (var i = 0; i < textAnswer.Length; i++)
-                    {
-                        var currentQuestion = model.TextQuestions[i];
-                        var currentAnswer = textAnswer[i];
-                        var tuple = new Tuple<string, string>(currentQuestion, currentAnswer);
-                        textQuestionsAndAnswer.Add(tuple);
-                    }
+                model.UserID = userId;
 
-                if(longTextAnswer != null)
-                    for (var i = 0; i < longTextAnswer.Length; i++)
-                    {
-                        var currentQuestion = model.ParagraphQuestions[i];
-                        var currentAnswer = longTextAnswer[i];
-                        var tuple = new Tuple<string, string>(currentQuestion, currentAnswer);
-                        paragraphQuestionAndAnswer.Add(tuple);
-                    }
+                for (var i = 0; i < textAnswer.Length; i++)
+                {
+                    var question = model.Questions.Where(j => j.Type == QuestionType.ShortAnswer).ElementAt(i);
+                    question.ResponseString = textAnswer[i];
+                }
 
                 if (multipleChoiceQuestion != null && multipleChoiceAnswer != null)
                     for (var i = 0; i < multipleChoiceQuestion.Length; i++)
                     {
-                        var currentQuestion = multipleChoiceQuestion[i];
-                        var currentAnswer = multipleChoiceAnswer[i];
-                        var tuple = new Tuple<string, string>(currentQuestion, currentAnswer);
-                        multipleChoiceQuestionAndAnswer.Add(tuple);
+                        var question = model.Questions.Where(j => j.Type == QuestionType.MultipleChoice).ElementAt(i);
+                        question.ResponseString = multipleChoiceAnswer[i];                                            
                     }
             }
 
-            if (Session["CurrentDisplayedSurvey"] != null)
-                surveyId = (int) Session["CurrentDisplayedSurvey"];
+            var surveyWasSubmitted = _service.SubmitSurveyResponse(model);
 
-            var takenSurvey = new TakenSurveyModel
-            {
-                SurveyId = surveyId,
-                TextQuestionsAndAnswers = textQuestionsAndAnswer,
-                ParagraphQuestionsAndAnswers = paragraphQuestionAndAnswer,
-                MultipleChoiceQuestionsAndAnswers = multipleChoiceQuestionAndAnswer
-            };
+            if (!surveyWasSubmitted)
+                throw new Exception("meh");
 
-            Session["takenSurvey"] = takenSurvey;
-
-            return RedirectToAction(string.Format("Analytics/{0}", surveyId), "Survey"); //Here should redirect to a thank you page or statistix page
+            return RedirectToAction("Analytics", "Survey", new { key = surveyId }); //Here should redirect to a thank you page or statistix page
         }
 
         // GET: Survey/Create
@@ -174,7 +170,7 @@ namespace SurveyMVC.Controllers
             {
                 QuestionTransport qt = new QuestionTransport
                 {
-                    Type = QuestionType.ShortAnswer,
+                    Type = QuestionType.MultipleChoice,
                     QuestionText = question.Key,
                     Options = question.Value.ToArray()
                 };
@@ -183,19 +179,14 @@ namespace SurveyMVC.Controllers
             }
             SurveyTransport model = new SurveyTransport
             {
-               // Key = -1,            //this is just example
                 Title = title,
                 Description = subTitle,
                 UserID = id,
                 Questions = listOfQuestions.ToArray()
             };
+                       
+            int surveyKey = _service.CreateSurvey(model);
             
-            var service = new SurveyBoomService();
-            int surveyKey = service.CreateSurvey(model);
-
-
-            Session["CreatedSurvey"] = model;
-
             return RedirectToAction("Display", "Survey", new { key = surveyKey });//I should go back to the user page and display all the surveys
         }
 
@@ -211,8 +202,7 @@ namespace SurveyMVC.Controllers
             {
                 try
                 {
-                    SurveyBoomService service = new SurveyBoomService();
-                    id = service.GetUserID(User.Identity.GetUserName());
+                    id = _service.GetUserID(User.Identity.GetUserName());
                 }
                 catch (Exception e)
                 {
@@ -273,6 +263,58 @@ namespace SurveyMVC.Controllers
             var list = oldArray.ToList();
             list.RemoveAt(0);
             return list.ToArray();
+        }
+
+        private static Dictionary<string, List<string>> GetAnswers(QuestionTransport[] questions, QuestionType qt)
+        {
+            var answers = new Dictionary<string, List<string>>();
+
+            foreach (var question in questions.Where(i => i.Type == qt))
+            {
+                var question1 = question;
+                var result = questions.Where(i => i.QuestionText == question1.QuestionText && i.Type == qt).ToList();
+                var textList = result.Select(i => i.ResponseString.ToString()).ToList();
+
+                if (!answers.ContainsKey(question.QuestionText))
+                    answers.Add(question.QuestionText, textList);
+            }
+            return answers;
+        }
+
+        private static HashSet<string> GetMultipleChoiceQuestions(QuestionTransport[] listOfQuestions, QuestionType multipleChoice)
+        {
+            var questions = new HashSet<string>();
+
+            foreach (var question in listOfQuestions.Where(i => i.Type == QuestionType.MultipleChoice))
+            {
+                questions.Add(question.QuestionText);
+            }
+            return questions;
+        }
+
+        private static Dictionary<string, List<string>> GetOptions(QuestionTransport[] questions)
+        {
+            var answers = new Dictionary<string, List<string>>();
+
+            foreach (var question in questions)
+            {
+                var question1 = question;
+                var result = questions.Where(i => i.QuestionText == question1.QuestionText && i.Type == QuestionType.MultipleChoice).ToList();
+                
+                var textQuestion = question.QuestionText;
+
+                var first = new string[] {};
+                foreach (var i in result)
+                {
+                    first = i.Options;
+                    break;
+                }
+                var textOptions = first.ToList();
+
+                if (!answers.ContainsKey(textQuestion))
+                    answers.Add(textQuestion, textOptions);
+            }
+            return answers;
         }
         #endregion
 
