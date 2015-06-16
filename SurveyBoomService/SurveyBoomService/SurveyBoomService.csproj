@@ -129,7 +129,6 @@
       <LastGenOutput>SurveyBoomModel.cs</LastGenOutput>
     </Content>
     <Content Include="connectionStrings.config" />
-    <None Include="Properties\PublishProfiles\surveyboomservice - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\surveyboomservice - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\surveyboomservice - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">

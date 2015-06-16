@@ -12,7 +12,7 @@
             @{
                 var response = Model.ShortAnswers.FirstOrDefault();
                 var count = 0;
-                if (response.Value.Any())
+                if (response.Value != null && response.Value.Any())
                 {
                     count = response.Value.Count();
                 }                   

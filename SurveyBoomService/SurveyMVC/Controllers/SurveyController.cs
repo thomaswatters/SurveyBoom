@@ -53,7 +53,8 @@ namespace SurveyMVC.Controllers
             {
                 var option1 = option;
                 var result = answersArray.Count(i => i == option1);
-                dictionary.Add(option1, result);
+                if(result >= 0)
+                    dictionary.Add(option1, result);
             }
 
             var chart = new Chart();
@@ -118,7 +119,7 @@ namespace SurveyMVC.Controllers
                     }
             }
 
-            var surveyWasSubmitted = _service.SubmitSurveyResponse(model);
+            var surveyWasSubmitted = _service.SubmitSurveyResponse(model, surveyId);
 
             if (!surveyWasSubmitted)
                 throw new Exception("meh");

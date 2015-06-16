@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://surveyboomservice.azurewebsites.net/SurveyBoomService.asmx?wsdl" docRef="http://surveyboomservice.azurewebsites.net/SurveyBoomService.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://surveyboomservice.azurewebsites.net/SurveyBoomService.asmx" xmlns:q1="http://surveyboomservice.azurewebsites.net/" binding="q1:SurveyBoomServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://surveyboomservice.azurewebsites.net/SurveyBoomService.asmx" xmlns:q2="http://surveyboomservice.azurewebsites.net/" binding="q2:SurveyBoomServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

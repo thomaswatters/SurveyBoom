@@ -22,3 +22,22 @@
     @Html.ActionLink("Create new survey", "Create", "Survey")
 @*    @Html.ActionLink("Create new survey", string.Format("CreateSurvey/{0}", Model.Key))*@
 </div>
+
+<div>
+    @{
+        SurveyMVC.net.azurewebsites.surveyboomservice.SurveyBoomService ws = new SurveyMVC.net.azurewebsites.surveyboomservice.SurveyBoomService();
+
+        int userId = ws.GetUserID(User.Identity.Name);
+        var userSurveys = ws.GetSurveysByUserID(userId);
+
+        <div><br/>View Survey Stats:</div>
+        foreach (var item in userSurveys)
+        {
+            <div>@Html.ActionLink("ID: " + item.SurveyID + ":: Title: " + item.Title, "Analytics", "Survey", new{key = item.SurveyID}, null)</div>
+        }
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

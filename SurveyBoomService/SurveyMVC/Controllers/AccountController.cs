@@ -78,11 +78,14 @@ namespace SurveyMVC.Controllers
 
             bool exists = service.UserLogin(model.Email, model.Password);
 
+            int user_id = service.GetUserID(model.Email);
+
             if (exists)
             {
-                int id = service.GetUserID(model.Email);
-                Session["currentUser"] = id;
-            //    result = SignInStatus.Success;
+                
+                
+                Session["currentUser"] = user_id;
+                result = SignInStatus.Success;
             }
             else
             {
@@ -91,7 +94,7 @@ namespace SurveyMVC.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Details", "User", new { id = user_id });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

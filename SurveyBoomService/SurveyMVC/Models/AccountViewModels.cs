@@ -42,6 +42,7 @@ namespace SurveyMVC.Models
     public class ForgotViewModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
@@ -49,7 +50,8 @@ namespace SurveyMVC.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Username")]
+        [EmailAddress]
+        [Display(Name = "Email")]
  
         public string Email { get; set; }
 
@@ -65,7 +67,7 @@ namespace SurveyMVC.Models
     public class RegisterViewModel
     {
         [Required]
-     //   [EmailAddress]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

@@ -11,6 +11,7 @@ namespace SurveyBoomService
         public int UserID { get; set; }
         public string Description { get; set; }
         public List<QuestionTransport> Questions { get; set; }
+        public int SurveyID { get; set; }
     }
 
 
@@ -28,5 +29,6 @@ namespace SurveyBoomService
         public QuestionType Type { get; set; }
         public string QuestionText { get; set; }
         public List<string> Options { get; set; }
+        public string ResponseString { get; set; }
     }
 }
