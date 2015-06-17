@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.UI.DataVisualization.Charting;
 using MvcApplication1.Models;
 using MvcApplication1.net.azurewebsites.surveyboomservice;
+using System.Threading.Tasks;
 namespace SurveyMVC.Controllers
 {
     public class SurveyController : Controller
@@ -18,8 +19,10 @@ namespace SurveyMVC.Controllers
 //        }
 //
         // GET: Survey/Analytics/8
+
         public ActionResult Analytics(int key)
         {      
+            
             var listOfQuestions = _service.GetAllResponses(key).ToArray();
 
             var shortAnswers = GetAnswers(listOfQuestions, QuestionType.ShortAnswer);
@@ -50,10 +53,16 @@ namespace SurveyMVC.Controllers
 
             foreach (var option in optionsArray)
             {
+
                 var option1 = option;
                 var result = answersArray.Count(i => i == option1);
-                if(result >= 0)
+
+
+                if (result > 0 && !dictionary.ContainsKey(option1))
+                {
                     dictionary.Add(option1, result);
+                }
+
             }
 
             var chart = new Chart();
@@ -109,12 +118,11 @@ namespace SurveyMVC.Controllers
                     var question = model.Questions.Where(j => j.Type == QuestionType.ShortAnswer).ElementAt(i);
                     question.ResponseString = textAnswer[i];
                 }
-
                 if (multipleChoiceQuestion != null && multipleChoiceAnswer != null)
                     for (var i = 0; i < multipleChoiceQuestion.Length; i++)
                     {
                         var question = model.Questions.Where(j => j.Type == QuestionType.MultipleChoice).ElementAt(i);
-                        question.ResponseString = multipleChoiceAnswer[i];                                            
+                        question.ResponseString = multipleChoiceAnswer[i];
                     }
             }
 
@@ -310,9 +318,8 @@ namespace SurveyMVC.Controllers
                     break;
                 }
                 var textOptions = first.ToList();
-
-                if (!answers.ContainsKey(textQuestion))
-                    answers.Add(textQuestion, textOptions);
+                if(!answers.ContainsKey(textQuestion))
+                     answers.Add(textQuestion, textOptions);
             }
             return answers;
         }

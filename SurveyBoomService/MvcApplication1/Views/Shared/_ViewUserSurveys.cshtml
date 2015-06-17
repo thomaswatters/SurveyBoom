@@ -1,0 +1,13 @@
+﻿@if (Request.IsAuthenticated)
+{
+    MvcApplication1.net.azurewebsites.surveyboomservice.SurveyBoomService ws = new MvcApplication1.net.azurewebsites.surveyboomservice.SurveyBoomService();
+
+    int userId = ws.GetUserID(User.Identity.Name);
+    var userSurveys = ws.GetSurveysByUserID(userId);
+
+    <h3>View Surveys</h3>
+    foreach (var item in userSurveys)
+    {
+        <div>@Html.ActionLink("ID: " + item.SurveyID + ":: Title: " + item.Title, "Analytics", "Survey", new { key = item.SurveyID }, null)</div>
+    }
+}

@@ -309,10 +309,11 @@
     <Content Include="Web References\net.azurewebsites.surveyboomservice\QuestionTransport.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\net.azurewebsites.surveyboomservice\Reference.map">
+    <Content Include="Views\Shared\_ViewUserSurveys.cshtml" />
+    <None Include="Web References\net.azurewebsites.surveyboomservice\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
@@ -322,6 +323,8 @@
     <Content Include="Views\Survey\Create.cshtml" />
     <Content Include="Views\Survey\Display.cshtml" />
     <Content Include="Views\Survey\Index.cshtml" />
+    <Content Include="Views\Survey\_AnalyticsPartial.cshtml" />
+    <Content Include="Views\Shared\_ListSurveysPartial.cshtml" />
     <None Include="Web References\net.azurewebsites.surveyboomservice\SurveyBoomService.disco" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

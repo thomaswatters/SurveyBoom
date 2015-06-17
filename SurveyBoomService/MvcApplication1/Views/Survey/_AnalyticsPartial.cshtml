@@ -1,0 +1,63 @@
+﻿@using System.Text
+@model MvcApplication1.Models.AnalyticsModel
+
+<meta http-equiv="refresh" content="30" />
+<div class="ss-response-count-container">
+    <br />
+    @{
+        var count = Model.ShortAnswers.Count + Model.MultipleChoiceAnswers.Count;
+    }
+    <span class="ss-total-num-responses" id=":0.rc">@count responses</span>
+</div>
+<div class="ss-summary">
+    <br />
+    <h1>Summary</h1>
+    <br />
+    <div class="ss-charts-container" id=":0.cc">
+        @foreach (var questionAnswer in Model.ShortAnswers)
+        {
+            <h3 class="ss-indiv-chart-title">@questionAnswer.Key</h3>
+            <br />
+            <div class="ss-summary-container" id=":2.sc">
+                <div class="ss-text-answer-group">
+                    @foreach (var answer in questionAnswer.Value)
+                    {
+                        <div class="ss-text-answer-container">@answer</div>
+                    }
+                </div>
+            </div>
+            <br />
+        }
+
+        @foreach (var question in Model.MultipleChoiceQuestions)
+        {
+            <h3 class="ss-indiv-chart-title">@question</h3>
+            <br />
+
+            var options = Model.MultipleChoiceOptions.FirstOrDefault(i => i.Key == question).Value.ToArray();
+            var answers = Model.MultipleChoiceAnswers.FirstOrDefault(i => i.Key == question).Value.ToArray();
+
+            var sb1 = new StringBuilder();
+            var sb2 = new StringBuilder();
+
+            foreach (var op in options)
+            {
+                sb1.Append(op);
+                sb1.Append(",");
+            }
+
+            foreach (var an in answers)
+            {
+                sb2.Append(an);
+                sb2.Append(",");
+            }
+
+            sb1.Remove(sb1.Length - 1, 1);
+            sb2.Remove(sb2.Length - 1, 1);
+            <div class="ss-summary-container" id=":3.sc">
+                <img alt="@question" src="@Url.Action("Chart", "Survey", new {options = sb1.ToString(), answers = sb2.ToString()})" />
+            </div>
+            <br />
+        }
+    </div>
+</div>

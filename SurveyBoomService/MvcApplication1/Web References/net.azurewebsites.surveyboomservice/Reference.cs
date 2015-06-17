@@ -49,6 +49,8 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
         
         private System.Threading.SendOrPostCallback GetSurveysByUserIDOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetAllSurveysOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -116,6 +118,9 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
         
         /// <remarks/>
         public event GetSurveysByUserIDCompletedEventHandler GetSurveysByUserIDCompleted;
+        
+        /// <remarks/>
+        public event GetAllSurveysCompletedEventHandler GetAllSurveysCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://surveyboomservice.azurewebsites.net/GetUserID", RequestNamespace="http://surveyboomservice.azurewebsites.net/", ResponseNamespace="http://surveyboomservice.azurewebsites.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -418,6 +423,33 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://surveyboomservice.azurewebsites.net/GetAllSurveys", RequestNamespace="http://surveyboomservice.azurewebsites.net/", ResponseNamespace="http://surveyboomservice.azurewebsites.net/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public SurveyTransport[] GetAllSurveys() {
+            object[] results = this.Invoke("GetAllSurveys", new object[0]);
+            return ((SurveyTransport[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetAllSurveysAsync() {
+            this.GetAllSurveysAsync(null);
+        }
+        
+        /// <remarks/>
+        public void GetAllSurveysAsync(object userState) {
+            if ((this.GetAllSurveysOperationCompleted == null)) {
+                this.GetAllSurveysOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAllSurveysOperationCompleted);
+            }
+            this.InvokeAsync("GetAllSurveys", new object[0], this.GetAllSurveysOperationCompleted, userState);
+        }
+        
+        private void OnGetAllSurveysOperationCompleted(object arg) {
+            if ((this.GetAllSurveysCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetAllSurveysCompleted(this, new GetAllSurveysCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -437,7 +469,7 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34230")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -506,7 +538,7 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34230")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -563,7 +595,7 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34230")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://surveyboomservice.azurewebsites.net/")]
     public enum QuestionType {
@@ -825,6 +857,32 @@ namespace MvcApplication1.net.azurewebsites.surveyboomservice {
         private object[] results;
         
         internal GetSurveysByUserIDCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public SurveyTransport[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((SurveyTransport[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.33440")]
+    public delegate void GetAllSurveysCompletedEventHandler(object sender, GetAllSurveysCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.33440")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetAllSurveysCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetAllSurveysCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

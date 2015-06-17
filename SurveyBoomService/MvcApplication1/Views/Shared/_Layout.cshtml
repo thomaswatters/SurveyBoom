@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <title>@ViewBag.Title - SurveyBoom</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
-<body>
+
+<body style="overflow-y:scroll">
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+                <p class="site-title">@Html.ActionLink("SurveyBoom", "Index", "Home")</p>
             </div>
             <div class="float-right">
                 <section id="login">
@@ -20,9 +22,9 @@
                 </section>
                 <nav>
                     <ul id="menu">
+                        
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        @if(Request.IsAuthenticated){<li>@Html.ActionLink("Create", "Create", "Survey")</li>}
                     </ul>
                 </nav>
             </div>
@@ -37,18 +39,18 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                <p>&copy; @DateTime.Now.Year - SurveyBoom</p>
             </div>
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/Scripts/1000984309-formeditor_prd.js")
     @Scripts.Render("~/Scripts/events.js")
     @Styles.Render("~/Content/4050887509-formeditor_ltr.css")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>
