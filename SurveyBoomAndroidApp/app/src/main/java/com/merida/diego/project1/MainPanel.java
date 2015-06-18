@@ -7,24 +7,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainPanel extends  Activity implements View.OnClickListener {
 
-
-
-    Button button1;
-    Button button2;
+    Button btn_TakeSurvey;
+    Button btn_ViewSurvey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_panel);
 
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
+        btn_TakeSurvey = (Button) findViewById(R.id.btn_TakeSurvey);
+        btn_ViewSurvey = (Button) findViewById(R.id.btn_ViewSurvey);
 
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
+        btn_TakeSurvey.setOnClickListener(this);
+        btn_ViewSurvey.setOnClickListener(this);
     }
 
 
@@ -47,22 +46,42 @@ public class MainPanel extends  Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+    public void takeSurvey(View view)
+    {
+
+        Intent intent = new Intent(this, Takeit.class);
+        EditText editText = (EditText)findViewById(R.id.et_TakeSurvey);
+        String message = editText.getText().toString();
+
+        if(message.isEmpty())
+            return;
+
+        intent.putExtra("survey_id", message);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
 
 
-            case R.id.button2:
-                startActivity(new Intent(this, Choose.class));
-                //startActivity(new Intent(this, Soap.class));
+            case R.id.btn_TakeSurvey:
+                Intent intent = new Intent(this, Takeit.class);
+                EditText editText = (EditText)findViewById(R.id.et_TakeSurvey);
+                String message = editText.getText().toString();
+
+                if(message.isEmpty())
+                    return;
+
+                intent.putExtra("survey_id", message);
+                startActivity(intent);
 
                 break;
 
 
-            case R.id.button1:
+            case R.id.btn_ViewSurvey:
 
-                startActivity(new Intent(this, Takeit.class));
 
 
 

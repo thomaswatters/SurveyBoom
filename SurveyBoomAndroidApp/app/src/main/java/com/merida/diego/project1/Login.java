@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.thomas.soap.SurveyBoomServiceSoap;
+
 
 public class Login extends Activity implements View.OnClickListener {
 
@@ -22,23 +24,43 @@ public class Login extends Activity implements View.OnClickListener {
 
         Login parent_;
 
+        SurveyBoomServiceSoap service;
+        String username;
         UserLoginTask(Login parent)
         {
             parent_ = parent;
+            service = new SurveyBoomServiceSoap();
         }
 
         @Override
         protected Boolean doInBackground(String... params) {
-            ServiceManager sm = new ServiceManager();
 
-            return sm.UserLogin(params[0], params[1]);
+            username = params[0];
+
+            Boolean res = false;
+
+            try
+            {
+                res = service.UserLogin(params[0], params[1]);
+            }
+            catch (Exception e)
+            {
+
+            }
+            return res;
         }
 
 
         protected void onPostExecute(Boolean result) {
 
             if(result) {
-
+//
+//                try {
+//                }
+//                catch (Exception e)
+//                {
+//
+//                }
                 //startActivity(new Intent(this, Soap.class));
                 startActivity(new Intent(parent_, MainPanel.class));
             }
@@ -50,9 +72,6 @@ public class Login extends Activity implements View.OnClickListener {
 
         }
     }
-
-
-
 
 
     @Override

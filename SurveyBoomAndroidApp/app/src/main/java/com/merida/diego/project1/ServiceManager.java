@@ -15,7 +15,6 @@ import java.net.SocketTimeoutException;
 public class ServiceManager
 {
 
-
     private static final String NAMESPACE = "http://surveyboomservice.azurewebsites.net/";
     private static final String MAIN_REQUEST_URL = "http://surveyboomservice.azurewebsites.net/SurveyBoomService.asmx";
     private static String SOAP_ACTION;
@@ -51,8 +50,6 @@ public class ServiceManager
         request.addProperty("username", username);
         request.addProperty("password", password);
 
-        System.out.println("SOAP oBJECT created ");
-
         SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
 
 
@@ -79,6 +76,43 @@ public class ServiceManager
         }
 
         return Boolean.parseBoolean(data);
+
+    }
+
+    public int GetUserID(String username)
+    {
+        String data = null;
+
+        String methodName = "GetUserID";
+
+        SoapObject request = new SoapObject(NAMESPACE, methodName);
+        request.addProperty("username", username);
+
+        SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
+
+
+        HttpTransportSE ht = getHttpTransportSE();
+
+
+        try
+
+        {
+            SOAP_ACTION = NAMESPACE + methodName;
+            ht.call(SOAP_ACTION, envelope);
+
+            data = envelope.getResponse().toString();
+
+        }
+
+        catch (SocketTimeoutException t) {
+            t.printStackTrace();
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (Exception q) {
+            q.printStackTrace();
+        }
+
+        return Integer.parseInt(data);
 
     }
 
